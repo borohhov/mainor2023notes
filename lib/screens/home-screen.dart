@@ -33,9 +33,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Märkmik"),),
-      body: Center(child: Column(
-        children: getTestNotes().map((note) => NoteRowWidget(note: note)).toList(),
-      )),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Center(child: Column(
+          children: getTestNotes().map((note) => NoteRowWidget(note: note)).toList(),
+        )),
+      ),
     );
   }
 
