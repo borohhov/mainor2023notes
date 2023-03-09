@@ -12,10 +12,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      routes: {
+        '/': (context) => HomeScreen(),
+        '/note-screen': (context) => NoteScreen(),
+      },
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const HomeScreen(),
     );
   }
 }
