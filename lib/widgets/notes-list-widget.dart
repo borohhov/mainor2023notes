@@ -1,3 +1,4 @@
+import 'package:demo_project/design/design-system.dart';
 import 'package:demo_project/widgets/note-row-widget.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class NotesListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: DesignSystem.SCREEN_HORIZONTAL_PADDING),
         child: Center(
             child: Column(
           children: noteModels.map((nm) => NoteRowWidget(note: nm)).toList(),
