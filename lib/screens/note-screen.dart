@@ -1,5 +1,8 @@
 import 'package:demo_project/models/note-model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../controllers/notes-controller.dart';
 
 class NoteScreen extends StatefulWidget {
   const NoteScreen({Key? key, this.noteModel}) : super(key: key);
@@ -11,18 +14,19 @@ class NoteScreen extends StatefulWidget {
 
 class _NoteScreenState extends State<NoteScreen> {
   NoteModel note = NoteModel();
+  late int? position;
   TextEditingController titleController = TextEditingController();
   TextEditingController messageController = TextEditingController();
 
-  @override
-  void initState() {
-    if (widget.noteModel == null) {
+  initNote(BuildContext context) {
+    position = ModalRoute.of(context)?.settings.arguments as int?;
+    if (position == null) {
       note.message = "This is a test message";
       note.title = "Demo note";
       note.emoji = "👍";
       note.date = DateTime.now();
     } else {
-      note = widget.noteModel!;
+      note = Provider.of<NotesController>(context).getNote(position!);
     }
 
     titleController.text = note.title;
@@ -31,10 +35,21 @@ class _NoteScreenState extends State<NoteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    initNote(context);
     return Scaffold(
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushNamed('/', arguments: note),
+        onPressed: () {
+          note.title = titleController.value.text;
+          note.message = messageController.value.text;
+          if (position == null) {
+            Provider.of<NotesController>(context, listen: false).addNote(note);
+          } else {
+            Provider.of<NotesController>(context, listen: false)
+                .editNote(position!, note);
+          }
+          Navigator.of(context).pop();
+        },
         child: Icon(Icons.check),
       ),
       body: Padding(
