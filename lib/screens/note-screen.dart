@@ -23,7 +23,6 @@ class _NoteScreenState extends State<NoteScreen> {
     if (position == null) {
       note.message = "This is a test message";
       note.title = "Demo note";
-      note.emoji = "👍";
       note.date = DateTime.now();
     } else {
       note = Provider.of<NotesController>(context).getNote(position!);
