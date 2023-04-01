@@ -1,3 +1,4 @@
+import 'package:demo_project/controllers/weather-controller.dart';
 import 'package:demo_project/models/note-model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -74,7 +75,24 @@ class _NoteScreenState extends State<NoteScreen> {
                         labelText: "Your message",
                         hintText: "Tell me your thoughts"),
                   ),
-                )
+                ),
+                note.weather != null
+                    ? Text(note.weather!)
+                    : FutureBuilder(
+                        future: WeatherController().fetchWeather(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Text("Loading weather");
+                          } else if (snapshot.connectionState ==
+                                  ConnectionState.done &&
+                              snapshot.hasData) {
+                            note.weather = snapshot.data!;
+                            return Text(note.weather!);
+                          } else
+                            return Text("");
+                        })
               ],
             ),
           ),
