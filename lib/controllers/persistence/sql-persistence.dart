@@ -38,7 +38,13 @@ class SqlPersistence extends Persistence {
   @override
   Future<int> saveNote(NoteModel note) async {
     var dbClient = await db;
-    int res = await dbClient.insert("Notes", note.toMap());
+    late int res;
+    if(note.id == null) {
+      res = await dbClient.insert("Notes", note.toMap());
+    }
+    else {
+      res = await dbClient.update('Notes', note.toMap(), where: 'id=${note.id}');
+    }
     return res;
   }
 
@@ -50,6 +56,7 @@ class SqlPersistence extends Persistence {
     List<NoteModel> notes = [];
     for (var i = 0; i < list.length; i++) {
       NoteModel note = NoteModel();
+      note.id = list[i]['id'];
       note.title = list[i]['title'];
       note.message = list[i]['message'];
       note.date = DateTime.parse(list[i]['date']);
@@ -65,8 +72,14 @@ class SqlPersistence extends Persistence {
   }
 
   @override
-  Future<NoteModel> getNote(String id) {
-    // TODO: implement getNote
-    throw UnimplementedError();
+  Future<NoteModel> getNote(num id) async {
+    var dbClient = await db;
+    List<Map<String, dynamic>> result = await dbClient.rawQuery('SELECT * FROM Notes WHERE id=$id');
+    NoteModel note = NoteModel();
+    note.id = result[0]["id"];
+    note.title = result[0]["title"];
+    note.message = result[0]["message"];
+    note.date = DateTime.parse(result[0]["date"]);
+    return note;
   }
 }

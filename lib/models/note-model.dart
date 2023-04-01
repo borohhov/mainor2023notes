@@ -1,5 +1,6 @@
 
 class NoteModel {
+  int? id;
   late String title;
   late String message;
   late DateTime date;

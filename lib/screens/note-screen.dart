@@ -18,14 +18,14 @@ class _NoteScreenState extends State<NoteScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController messageController = TextEditingController();
 
-  initNote(BuildContext context) {
+  initNote(BuildContext context) async {
     position = ModalRoute.of(context)?.settings.arguments as int?;
     if (position == null) {
       note.message = "This is a test message";
       note.title = "Demo note";
       note.date = DateTime.now();
     } else {
-      note = Provider.of<NotesController>(context).getNote(position!);
+      note = await Provider.of<NotesController>(context).getNote(position!);
     }
 
     titleController.text = note.title;
@@ -34,51 +34,55 @@ class _NoteScreenState extends State<NoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    initNote(context);
     return Scaffold(
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           note.title = titleController.value.text;
           note.message = messageController.value.text;
-          if (position == null) {
-            Provider.of<NotesController>(context, listen: false).addNote(note);
-          } else {
-            Provider.of<NotesController>(context, listen: false)
-                .editNote(position!, note);
-          }
+          await Provider.of<NotesController>(context, listen: false)
+              .saveNote(position, note);
           Navigator.of(context).pop();
         },
         child: Icon(Icons.check),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                TextField(
-                  controller: titleController,
-                  onSubmitted: (text) => titleController.text = text,
-                  decoration: InputDecoration(labelText: "Title"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: TextField(
-                    controller: messageController,
-                    onSubmitted: (text) => messageController.text = text,
-                    maxLines: 16,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Your message",
-                        hintText: "Tell me your thoughts"),
+      body: FutureBuilder(
+          future: initNote(context),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: Text("Loading..."),);
+            }
+            else {
+              return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: titleController,
+                        onSubmitted: (text) => titleController.text = text,
+                        decoration: InputDecoration(labelText: "Title"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: TextField(
+                          controller: messageController,
+                          onSubmitted: (text) => messageController.text = text,
+                          maxLines: 16,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Your message",
+                              hintText: "Tell me your thoughts"),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+                ),
+              ),
+            );
+            }
+          }),
     );
   }
 }
