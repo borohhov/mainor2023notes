@@ -8,7 +8,7 @@ import '../models/note-model.dart';
 
 class NotesController extends ChangeNotifier {
   //List<NoteModel> notes = [];
-  Persistence persistence = SqlPersistence();
+  Persistence persistence = FirebasePersistence();
   Future<List<NoteModel>> get allNotes {
     return persistence.getAllNotes();
   }

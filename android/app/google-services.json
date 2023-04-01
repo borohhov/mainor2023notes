@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "98441914466",
+    "project_id": "mainor2023notes",
+    "storage_bucket": "mainor2023notes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98441914466:android:a01c7cad7525af9f86493b",
+        "android_client_info": {
+          "package_name": "com.example.demo_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98441914466-pggisp5p0u64hp96tdqoanje77kgr9e5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvOylxU3mlGXznDMdyG0DBwqpQ2yqX7no"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98441914466-pggisp5p0u64hp96tdqoanje77kgr9e5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
