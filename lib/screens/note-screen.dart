@@ -14,12 +14,12 @@ class NoteScreen extends StatefulWidget {
 
 class _NoteScreenState extends State<NoteScreen> {
   NoteModel note = NoteModel();
-  late int? position;
+  late String? position;
   TextEditingController titleController = TextEditingController();
   TextEditingController messageController = TextEditingController();
 
   initNote(BuildContext context) async {
-    position = ModalRoute.of(context)?.settings.arguments as int?;
+    position = ModalRoute.of(context)?.settings.arguments as String?;
     if (position == null) {
       note.message = "This is a test message";
       note.title = "Demo note";

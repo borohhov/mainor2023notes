@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class NoteRowWidget extends StatelessWidget {
   const NoteRowWidget({Key? key, required this.note, required this.id}) : super(key: key);
   final NoteModel note;
-  final int? id;
+  final String? id;
 
   @override
   Widget build(BuildContext context) {
