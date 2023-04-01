@@ -12,18 +12,21 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Märkmik"),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => Navigator.of(context).pushNamed('/note-screen'),
-      ),
-      body: SingleChildScrollView(
-          child: NotesListWidget(
-        noteModels:
-            Provider.of<NotesController>(context, listen: true).allNotes,
-      )),
-    );
+        appBar: AppBar(
+          title: const Text("Märkmik"),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => Navigator.of(context).pushNamed('/note-screen'),
+        ),
+        body: FutureBuilder(
+            future:
+                Provider.of<NotesController>(context, listen: true).allNotes,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: Text("Loading..."));
+              }
+              return NotesListWidget(noteModels: snapshot.data);
+            }));
   }
 }
